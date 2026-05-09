@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Quote Generator</h1>
+    <div id="quote-container">
+        <p id="text">Press the button to load a quote...</p>
+        <p id="author"></p>
+    </div>
+    <button id="new-quote">Get New Quote</button>
+
+    <script>
+        const button = document.getElementById('new-quote');
+        const textElem = document.getElementById('text');
+        const authorElem = document.getElementById('author');
+
+        async function fetchQuote() {
+            try {
+                const response = await fetch('http://127.0.0.1:3000/');
+                const data = await response.json();
+                
+                textElem.innerText = `"${data.quote}"`;
+                authorElem.innerText = `- ${data.author}`;
+            } catch (error) {
+                textElem.innerText = "Error connecting to backend.";
+                console.error(error);
+            }
+        }
+        button.addEventListener('click', fetchQuote);
+        // Load one quote immediately on startup
+        fetchQuote();
+    </script>
+</body>
+</html>
